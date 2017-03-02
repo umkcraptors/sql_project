@@ -1,0 +1,82 @@
+//adding unique key to marketer table//
+ALTER TABLE mARKETER
+ADD UNIQUE (marketer_name)
+
+//select all from marketer,consumer,marketerproduct,supplier,supplierproduct//
+
+select* from marketer
+
+select* from consumer
+
+select* from marketerproduct
+
+select* from product
+
+select* from supplier
+
+select* from supplierproduct
+
+
+//dropping a table//
+select* from product
+drop table tenant
+
+drop table marketerproduct
+
+drop table supplierproduct
+
+
+// all suppliername,product name,price,manufacturer,sku,supplier domain//
+select p.product_name, p.product_price,p.product_manufacturer,p.product_sku, s.supplier_name, s.supplier_domain
+from product p, supplier s
+where p.product_id = s.supplier_id;
+
+
+
+//adding forgeign key //
+
+ALTER TABLE marketerproduct
+ADD FOREIGN KEY (product_Id)
+REFERENCES product(product_Id)
+
+
+ALTER TABLE supplierproduct
+ADD FOREIGN KEY (product_Id)
+REFERENCES product(product_Id)
+
+
+ALTER TABLE supplierproduct
+ADD FOREIGN KEY (supplier_Id)
+REFERENCES supplier(supplier_Id)
+
+//all marketername,productname,price,manufacturer,sku,marketer domain//
+select m.marketer_name,p.product_name,p.product_price,p.product_manufacturer,p.product_sku,m.marketer_domain
+from marketer m ,product p
+where m.marketer_id= p.product_id;
+
+//count of product per supplier//
+select count(product_id) from supplierproduct
+
+//count of product per marketer//
+select count(product_id) from marketerproduct
+
+//all supplier name,productname,price,manufacturer,sku,supplierdomain price between 25 and 99//
+
+select s.supplier_name,p.product_name,p.product_price,p.product_manufacturer,p.product_sku,s.supplier_domain
+from supplier s,product p
+where product_price between 25 and 99;
+
+
+//max price//
+select max(product_price) from product
+
+//min price//
+
+select min(product_price) from product
+
+//group by//
+select product_description,sum(product_price) from product
+group by product_description ;
+
+select supplier_type,count(*) from supplier
+group by supplier_type;
