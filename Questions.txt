@@ -1,0 +1,15 @@
+*What is the synatx for SystemDateTime? (We were using Date and Tiemstamp)
+
+*Check the data we enetered.
+
+*We didn't get this question: Count of products per marketer and supplier?
+
+( This is the syntax we used to "Count the products"
+
+select count (product_name)  from product;
+select count (product_name) as supplier from product;
+
+--RESULT = 5---
+)
+
+*Each supplier's max price product details?
