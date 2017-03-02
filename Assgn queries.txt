@@ -1,0 +1,60 @@
+ALTER TABLE consumer
+ADD UNIQUE (consumer_Id)
+
+ALTER TABLE Marketerproduct
+ADD FOREIGN KEY (marketer_Id)
+REFERENCES marketer(marketer_Id)
+
+ALTER TABLE Marketerproduct
+ADD FOREIGN KEY (product_Id)
+REFERENCES product(product_Id)
+
+ALTER TABLE Supplier_product
+ADD FOREIGN KEY (supplier_Id)
+REFERENCES suppliers(supplier_Id)
+
+
+
+
+1)  select * from suppliers
+
+2)  select * from marketer
+
+3)  select * from product
+
+4)  select * from consumer
+
+
+5)  select s.supplier_name, p.product_name, p.product_price, p.product_manufacturer, p.product_sku, s.supplier_domain
+from suppliers s, product p
+where p.product_id = s.supplier_id
+
+
+6)  select m.marketer_name, p.product_name, p.product_price, p.product_manufacturer, p.product_sku, m.marketer_domain
+from marketer m, product p
+where p.product_id = m.marketer_id
+
+
+7)  select count(*) from Supplier_product
+where product_id = supplier_id
+
+
+8)  select count(*) from marketerproduct
+where product_id = marketer_id
+
+9)  select max(product_price) from product
+
+10) select min(product_price) from product
+
+
+11)  select supplier_type,count(*) 
+from suppliers
+group by supplier_type
+
+9)  select s.supplier_name, p.product_name, p.product_price, p.product_manufacturer, p.product_sku, s.supplier_domain
+from suppliers s, product p
+where product_price between 25 and 99
+
+
+
+
