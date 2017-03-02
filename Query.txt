@@ -1,0 +1,67 @@
+create table Consumer (consumer_id varchar(20) not null primary key,
+consumer_email varchar(20) unique,
+consumer_firstname varchar(20) not null,
+consumer_middlename varchar(20),
+consumer_lastname varchar(20) not null,
+consumer_phone varchar(20) unique,
+consumer_status varchar(20),
+consumer_handle varchar(20)
+)
+
+alter table marketer
+modify marketer_update TIMESTAMP
+
+Alter table supplier
+add supplier_type int not null
+
+alter table product
+modify product_description varchar2(40)
+
+update supplier 
+set supplier_type = 'Gadgets'
+where supplier_id = '103'
+
+alter table supplierproduct
+add foreign key (supplier_id)
+references supplier (supplier_id)
+
+
+
+alter table supplierproduct
+add foreign key (product_id)
+references product (product_id)
+
+
+
+alter table marketerproduct
+add foreign key (marketer_id)
+references marketer (marketer_id)
+
+
+  alter table marketerproduct
+  add foreign key (product_id)
+  references product (product_id)
+
+
+
+--SELECT STATEMENTS--
+
+select * from PRODUCTS/MARKETER/CONSUMER/SUPPLIER/MARKETPRODUCT/ SUPPLIERPRODUCT
+
+
+select count (product_name)  from product;
+select count (product_name) as supplier from product;
+--RESULT = 5---
+
+select s.supplier_name, p.product_name, p.product_price, p.product_manufacturer, p.product_sku, s.supplier_domain
+from supplier s, product p
+where p.product_price >'100' and p.product_price < '500'
+
+select s.Supplier_name, p.product_name, p.product_price, p.product_manufacturer, p.product_sku, s.supplier_domain 
+from supplier s, product p
+where s.supplier_id = p.product_id
+
+
+select s.Supplier_name, p.product_name, p.product_price, p.product_manufacturer, p.product_sku, s.supplier_domain 
+from supplier s, product p
+where s.supplier_id = p.product_id

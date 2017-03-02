@@ -1,0 +1,118 @@
+--ordering by descending--
+SELECT *FROM Table3
+ORDER BY name DESC;
+
+
+--updating--
+update Table3
+set email = 'kalyan@gmail.com' ,  phonenumber = 5685214587
+where id = 5 ;
+
+
+--delete--
+
+delete from Table3
+where id = 6 ;
+
+
+--in--
+SELECT *
+FROM Table3
+where salary in( '50000','60000');
+
+//creating groceries table//
+
+create table groceries(
+numbers int NOT NULL,
+vegetables varchar2(100) NOT NULL,
+fruits varchar2(100) NOT NULL,
+bakery varchar2(50) NOT NULL,
+pernsonal varchar2(20) NOT NULL,
+quatity int NULL,
+);
+
+//inserting values into groceries table//
+
+INSERT INTO groceries VALUES (1,'tomatoes','blueberries','cake','soap',7);
+INSERT INTO groceries VALUES (2,'ladyfinger','strawberries','bread','bodywash',5);
+INSERT INTO groceries VALUES (3,'onions','apple','donuts','shampoo',8);
+INSERT INTO groceries VALUES (4,'cabbage','banana','pizza','conditioner',6);
+INSERT INTO groceries VALUES (5,'califlower','grapes','burger','toothbrush',5);
+INSERT INTO groceries VALUES (6,'capsicum','blackberries','sandwich','paste',5);
+INSERT INTO groceries VALUES (7,'cabbage','banana','burger','shampoo',5);
+INSERT INTO groceries VALUES (8,'cabbage','banana','burger','shampoo',5);
+
+//using and or at the same time with AND in paranthesis//
+
+select * from groceries
+where vegetables = 'cabbage'
+or (vegetables ='cabbage'
+and fruits = 'banana');
+
+//using and or at the same time with OR in paranthesis//
+select * from groceries
+where (vegetables = 'cabbage'
+or fruits = 'blackberries')
+and vegetables ='cabbage';
+
+// using and or at the same time with NO paranthesis//
+select * from groceries
+where vegetables = 'cabbage'
+or fruits = 'blackberries'
+and vegetables ='cabbage';
+
+// selecting particular items//
+select bakery,personal from groceries
+where vegetables = 'cabbage'
+or fruits = 'blackberries';
+
+//inserting a new row//
+INSERT INTO groceries 
+VALUES (9,'ladyfinger','strawberries','bread','shampoo',4);
+
+//inserting with only few values//
+
+INSERT INTO groceries (numbers,vegetables,fruits,bakery,personal)
+VALUES (10,'tomatoes','strawberries','cake','shampoo');
+
+// updating //
+UPDATE groceries
+SET personal = 'paste'
+where numbers =9;
+
+//order by//
+SELECT * FROM GROCERIES
+ORDER BY quantity;
+
+//like//
+SELECT * FROM GROCERIES
+where bakery like 'b%';
+
+SELECT * FROM GROCERIES
+where fruits like '%ies';
+
+SELECT * FROM GROCERIES
+where personal like '%poo%';
+
+SELECT * FROM GROCERIES
+where fruits not like '%ies%';
+
+//in//
+SELECT * FROM GROCERIES
+where vegetables in('cabbage','tomatoes');
+
+//between//
+SELECT * FROM GROCERIES
+where vegetables between 'c' and 'm';
+
+SELECT * FROM GROCERIES
+where quantity between 5 and 6;
+
+//alias//
+SELECT quantity as total FROM GROCERIES;
+
+
+
+
+
+
