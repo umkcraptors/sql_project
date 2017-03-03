@@ -1,0 +1,222 @@
+
+// CREATING CONSUMER TABLE //
+
+  CREATE TABLE "SYSTEM"."CONSUMER" 
+   (	"CONSUMER_ID" VARCHAR2(20 BYTE), 
+	"CONSUMER_EMAIL" VARCHAR2(30 BYTE), 
+	"CONSUMER_FIRSTNAME" VARCHAR2(20 BYTE) NOT NULL ENABLE, 
+	"CONSUMER_MIDDLENAME" VARCHAR2(20 BYTE), 
+	"CONSUMER_LASTNAME" VARCHAR2(20 BYTE) NOT NULL ENABLE, 
+	"CONSUMER_PHONE" VARCHAR2(15 BYTE), 
+	"CONSUMER_STATUS" VARCHAR2(20 BYTE), 
+	"CONSUMER_HANDLE" VARCHAR2(20 BYTE), 
+	 PRIMARY KEY ("CONSUMER_ID")
+  );
+---------------------------------------------------------------------------------------------------------------
+// CREATING MARKETER TABLE //
+
+ CREATE TABLE "SYSTEM"."MARKETER" 
+   (	"MARKETER_ID" NUMBER(*,0) NOT NULL ENABLE, 
+	"MARKETER_DOMAIN" VARCHAR2(20 BYTE) NOT NULL ENABLE, 
+	"MARKETER_TYPE" VARCHAR2(20 BYTE), 
+	"MARKETER_NAME" VARCHAR2(20 BYTE), 
+	"MARKETER_CREATE" TIMESTAMP (6), 
+	"MARKETER_UPDATE" TIMESTAMP (6), 
+	 CONSTRAINT "MARKETER_PK" PRIMARY KEY ("MARKETER_ID")
+  );
+---------------------------------------------------------------------------------------------------------------
+
+// CREATING MARKETERPRODUCT TABLE //
+
+  CREATE TABLE "SYSTEM"."MARKETERPRODUCT" 
+   (	"MARKETERPRODUCT_ID" NUMBER(*,0), 
+	"MARKETER_ID" NUMBER(*,0), 
+	"PRODUCT_ID" NUMBER(*,0), 
+	"MARKETERPRODUCT_CREATE" TIMESTAMP (6), 
+	"MARKETERPRODUCT_UPDATE" TIMESTAMP (6), 
+	 PRIMARY KEY ("MARKETERPRODUCT_ID")
+  );
+
+---------------------------------------------------------------------------------------------------------------
+// CREATING PRODUCT TABLE //
+
+CREATE TABLE "SYSTEM"."PRODUCT" 
+   (	"PRODUCT_ID" NUMBER(*,0), 
+	"PRODUCT_MANUFACTURER" VARCHAR2(20 BYTE), 
+	"PRODUCT_SKU" VARCHAR2(20 BYTE), 
+	"PRODUCT_UPC" VARCHAR2(20 BYTE), 
+	"PRODUCT_EAN" VARCHAR2(20 BYTE), 
+	"PRODUCT_GTIN" VARCHAR2(20 BYTE), 
+	"PRODUCT_NAME" VARCHAR2(20 BYTE), 
+	"PRODUCT_DESCRIPTION" VARCHAR2(20 BYTE), 
+	"PRODUCT_UOM" VARCHAR2(20 BYTE), 
+	"PRODUCT_PRICE" NUMBER(10,0), 
+	"PRODUCT_CREATE" TIMESTAMP (6), 
+	"PRODUCT_UPDATE" TIMESTAMP (6), 
+	 PRIMARY KEY ("PRODUCT_ID")
+   );
+---------------------------------------------------------------------------------------------------------------
+
+// CREATING SUPPLIER TABLE //
+
+
+  CREATE TABLE "SYSTEM"."SUPPLIER" 
+   (	"SUPPLIER_ID" NUMBER(*,0) NOT NULL ENABLE, 
+	"SUPPLIER_DOMAIN" VARCHAR2(20 BYTE), 
+	"SUPPLIER_TYPE" VARCHAR2(20 BYTE), 
+	"SUPPLIER_NAME" VARCHAR2(20 BYTE) NOT NULL ENABLE, 
+	"SUPPLIER_CREATE" TIMESTAMP (6), 
+	"SUPPLIER_UPDATE" TIMESTAMP (6), 
+	 CONSTRAINT "SUPPLIER_PK" PRIMARY KEY ("SUPPLIER_ID")
+  );
+----------------------------------------------------------------------------------------------------------------
+// CREATING SUPPLIERPRODUCT TABLE //
+
+  CREATE TABLE "SYSTEM"."SUPPLIERPRODUCT" 
+   (	"SUPPLIERPRODUCT_ID" NUMBER(*,0), 
+	"SUPPLIER_ID" NUMBER(*,0), 
+	"PRODUCT_ID" NUMBER(*,0), 
+	"SUPPLIERPRODUCT_CREATE" TIMESTAMP (6), 
+	"SUPPLIERPRODUCT_UPDATE" TIMESTAMP (6), 
+	 PRIMARY KEY ("SUPPLIERPRODUCT_ID")
+  );
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ALTER TABLE marketerproduct
+ADD FOREIGN KEY (product_id)
+REFERENCES product(product_id);
+
+ALTER TABLE supplierproduct
+ADD FOREIGN KEY (supplier_id)
+REFERENCES supplier(supplier_id);
+
+ALTER TABLE marketerproduct
+ADD FOREIGN KEY (marketer_id)
+REFERENCES marketer(marketer_id);
+
+ALTER TABLE supplierproduct
+ADD FOREIGN KEY (product_id)
+REFERENCES product(product_id);
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 
+select * from product
+
+select * from supplier
+
+select * from marketer
+
+select * from marketerproduct
+
+select * from supplierproduct
+
+select * from consumer
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// All Supplier name, product name, price, manufacturer, sku, supplier domain //
+
+select s.supplier_name, p.product_name, p.product_manufacturer, p.product_price, p.product_sku, s.supplier_domain
+from PRODUCT p, SUPPLIER s
+order by supplier_name;
+
+------------------
+
+//All MARKETER name, product name, price, manufacturer, sku, MARKETER domain //
+
+select s.supplier_name, p.product_name, p.product_manufacturer, p.product_price, p.product_sku, s.supplier_domain
+from PRODUCT p, SUPPLIER s
+order by supplier_name;
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// count of PRODUCT per SUPPLIER and MARKETER//
+
+select count(product_id) from SUPPLIERPRODUCT
+
+select count(product_id) from MARKETERPRODUCT
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//All Supplier name, product name, price, manufacturer, sku, supplier domain whose price is between 100 AND 900 //
+
+select s.supplier_name, p.product_name, p.product_manufacturer, p.product_price, p.product_sku, s.supplier_domain
+from PRODUCT p, supplier s
+where product_price between 100 and 900;
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+					
+// max price of product//
+
+select s.supplier_name, p.product_name, p.product_manufacturer, p.product_price, p.product_sku, s.supplier_domain
+from PRODUCT p, SUPPLIER s
+order by product_price desc;
+
+// min price of product//
+
+select s.supplier_name, p.product_name, p.product_manufacturer, p.product_price, p.product_sku, s.supplier_domain
+from PRODUCT p, SUPPLIER s
+order by product_price asc;
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+//////////////////////////////////////////////////////////////////////////////   UPDATED    /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+select s.supplier_name, p.product_name, p.product_manufacturer, p.product_price, p.product_sku, s.supplier_domain
+from PRODUCT p, SUPPLIER s, supplierproduct sp
+where s.supplier_id=sp.supplier_id and p.product_id = sp.product_id
+and product_name = 'Headphones'
+order by supplier_name,product_price;
+
+select s.supplier_name, p.product_name, min(p.product_price)
+from PRODUCT p, SUPPLIER s, supplierproduct sp
+where s.supplier_id=sp.supplier_id and p.product_id = sp.product_id
+group by supplier_name,product_name
+order by min(p.product_price);
+
+select * from product;
+
+select m.marketer_name, p.product_name, p.product_manufacturer, p.product_price, p.product_sku, m.marketer_domain
+from PRODUCT p, marketer m , marketerproduct mp
+where m.marketer_id= mp.marketer_id and p.product_id = mp.product_id
+order by product_price asc;
+
+select * from product
+
+select s.supplier_name, p.product_name, p.product_manufacturer, p.product_price, p.product_sku, s.supplier_domain
+from PRODUCT p, SUPPLIER s ,supplierproduct sp
+where p.product_id=sp.product_id and s.supplier_id = sp.supplier_id
+group by s.supplier_name, p.product_name, p.product_manufacturer, p.product_price, p.product_sku, s.supplier_domain
+order by product_name;
+
+select m.marketer_name, p.product_name, p.product_manufacturer, p.product_price, p.product_sku, m.marketer_domain
+from PRODUCT p, marketer m ,marketerproduct mp
+where mp.product_id = p.product_id and m.marketer_id = mp.marketer_id
+order by product_name;
+
+SELECT s.supplier_name, count(p.product_name)
+FROM supplier s,product p,supplierproduct sp
+WHERE s.supplier_id = sp.supplier_id AND p.product_id = sp.product_id
+GROUP BY s.supplier_name;
+
+SELECT m.marketer_domain, COUNT(p.product_name)
+FROM marketer m ,product p, marketerproduct mp
+WHERE m.marketer_id= mp.marketer_id AND p.product_id = mp.product_id
+GROUP BY m.marketer_domain;
+
+SELECT s.supplier_name,p.product_name,p.product_price,p.product_manufacturer,p.product_sku,s.supplier_domain
+FROM supplier s,product p,supplierproduct sp
+WHERE s.supplier_id = sp.supplier_id AND p.product_id = sp.product_id
+GROUP BY s.supplier_name,p.product_name,p.product_price,p.product_manufacturer,p.product_sku,s.supplier_domain
+HAVING product_price BETWEEN 24.99 and 99;
+
+SELECT p.product_name, MAX(p.product_price)
+FROM supplier s,product p,supplierproduct sp
+WHERE s.supplier_id = sp.supplier_id AND p.product_id = sp.product_id
+GROUP  BY p.product_name;
+
+SELECT s.supplier_name, COUNT(p.product_price)
+FROM supplier s,product p,supplierproduct sp
+WHERE s.supplier_id = sp.supplier_id AND p.product_id = sp.product_id
+GROUP BY s.supplier_name
+HAVING COUNT(p.product_name)>0;
+
