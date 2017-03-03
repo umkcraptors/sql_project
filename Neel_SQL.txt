@@ -153,4 +153,70 @@ order by product_price desc;
 select s.supplier_name, p.product_name, p.product_manufacturer, p.product_price, p.product_sku, s.supplier_domain
 from PRODUCT p, SUPPLIER s
 order by product_price asc;
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+//////////////////////////////////////////////////////////////////////////////   UPDATED    /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+select s.supplier_name, p.product_name, p.product_manufacturer, p.product_price, p.product_sku, s.supplier_domain
+from PRODUCT p, SUPPLIER s, supplierproduct sp
+where s.supplier_id=sp.supplier_id and p.product_id = sp.product_id
+and product_name = 'Headphones'
+order by supplier_name,product_price;
+
+select s.supplier_name, p.product_name, min(p.product_price)
+from PRODUCT p, SUPPLIER s, supplierproduct sp
+where s.supplier_id=sp.supplier_id and p.product_id = sp.product_id
+group by supplier_name,product_name
+order by min(p.product_price);
+
+select * from product;
+
+select m.marketer_name, p.product_name, p.product_manufacturer, p.product_price, p.product_sku, m.marketer_domain
+from PRODUCT p, marketer m , marketerproduct mp
+where m.marketer_id= mp.marketer_id and p.product_id = mp.product_id
+order by product_price asc;
+
+select * from product
+
+select s.supplier_name, p.product_name, p.product_manufacturer, p.product_price, p.product_sku, s.supplier_domain
+from PRODUCT p, SUPPLIER s ,supplierproduct sp
+where p.product_id=sp.product_id and s.supplier_id = sp.supplier_id
+group by s.supplier_name, p.product_name, p.product_manufacturer, p.product_price, p.product_sku, s.supplier_domain
+order by product_name;
+
+select m.marketer_name, p.product_name, p.product_manufacturer, p.product_price, p.product_sku, m.marketer_domain
+from PRODUCT p, marketer m ,marketerproduct mp
+where mp.product_id = p.product_id and m.marketer_id = mp.marketer_id
+order by product_name;
+
+SELECT s.supplier_name, count(p.product_name)
+FROM supplier s,product p,supplierproduct sp
+WHERE s.supplier_id = sp.supplier_id AND p.product_id = sp.product_id
+GROUP BY s.supplier_name;
+
+SELECT m.marketer_domain, COUNT(p.product_name)
+FROM marketer m ,product p, marketerproduct mp
+WHERE m.marketer_id= mp.marketer_id AND p.product_id = mp.product_id
+GROUP BY m.marketer_domain;
+
+SELECT s.supplier_name,p.product_name,p.product_price,p.product_manufacturer,p.product_sku,s.supplier_domain
+FROM supplier s,product p,supplierproduct sp
+WHERE s.supplier_id = sp.supplier_id AND p.product_id = sp.product_id
+GROUP BY s.supplier_name,p.product_name,p.product_price,p.product_manufacturer,p.product_sku,s.supplier_domain
+HAVING product_price BETWEEN 24.99 and 99;
+
+SELECT p.product_name, MAX(p.product_price)
+FROM supplier s,product p,supplierproduct sp
+WHERE s.supplier_id = sp.supplier_id AND p.product_id = sp.product_id
+GROUP  BY p.product_name;
+
+SELECT s.supplier_name, COUNT(p.product_price)
+FROM supplier s,product p,supplierproduct sp
+WHERE s.supplier_id = sp.supplier_id AND p.product_id = sp.product_id
+GROUP BY s.supplier_name
+HAVING COUNT(p.product_name)>0;
 
