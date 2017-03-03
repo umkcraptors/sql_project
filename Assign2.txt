@@ -1,0 +1,29 @@
+
+alter table product
+modify product_price number
+
+
+select s.supplier_name,  p.product_name, count(product_price)
+from supplier s, product p, supplierproduct sp
+where s.supplier_id= sp.supplier_id 
+and p.product_id= sp.product_id
+group by s.supplier_name, p.product_name
+
+
+select   p.product_name, s.supplier_name, min(product_price)
+from supplier s, product p, supplierproduct sp
+where s.supplier_id= sp.supplier_id 
+and p.product_id= sp.product_id
+and p.product_name= 'ActivityTracker'
+group by s.supplier_name, p.product_name
+order by min(product_price)
+
+
+
+select   s.supplier_name, p.product_name, count(product_price)
+from supplier s, product p, supplierproduct sp
+where s.supplier_id= sp.supplier_id 
+and p.product_id= sp.product_id
+group by s.supplier_name, p.product_name
+having count(p.product_name)>1
+order by min(product_price)
