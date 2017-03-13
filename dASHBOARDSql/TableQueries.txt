@@ -1,0 +1,94 @@
+select count(name)
+from REGISTRATION
+
+
+----------# of courses enrolled by each student----------
+select r.name, c.course_name
+from registration r, courses c, registration_course cd
+where r.registration_id=cd.registration_id
+and c.course_id = cd.course_id 
+order by r.name
+
+
+---------NAME_COURSE_SCORE_RESULT--------------
+select r.name, c.course_name, a.score,a.result
+from registration r, courses c, registration_course cd, assignments a
+where r.registration_id=cd.registration_id
+and c.course_id = cd.course_id and a.registration_course_id = cd.registration_course_id
+order by r.name
+
+---------STUDENTS NOT ENROLLED IN ANY COURSE-------
+select r.name
+from registration r left outer join registration_course cd
+on r.registration_id =cd.registration_id
+where cd.registration_id is null
+
+           (or)
+
+select r.name
+from registration r , registration_course cd
+where r.registration_id  =  cd.registration_id (+)
+and cd.registration_id is null
+
+ -----------COURSES:NO-ONE ENROLLED------
+select c.*
+from courses c left outer join registration_course cd 
+on c.course_id = cd.course_id
+where cd.course_id is null
+             (or)
+select c.*
+from courses c , registration_course cd
+where c.course_id  =  cd.course_id (+)
+and cd.course_id is null
+
+
+-----------NO OF STUDENTS ENROLLED IN EACH COURSE-------
+
+select c.course_name, count(course_name) as no_of_students_enrolled
+from courses c, registration_course cd
+where c.course_id = cd.course_id
+group by c.course_name
+order by course_name
+order by count(course_name) desc
+
+
+-----Total #of courses(count)---------
+select sum(count(course_name))
+from courses c, registration_course cd
+where c.course_id = cd.course_id
+group by course_name
+
+
+-------Percentage------
+Select course_name,(Count(course_name)* 100 / (
+       select sum(count(course_name))
+       from courses c, registration_course cd
+       where c.course_id = cd.course_id
+       group by course_name)
+       ) as Percentage
+from courses c, registration_course cd
+where c.course_id = cd.course_id
+group by course_name
+order by percentage desc
+
+
+---------Famous_course---------
+select * from 
+ (select c.course_name, count(course_name) as NO_OF_STUDENTS_ENROLLED
+from courses c, registration_course cd
+where c.course_id = cd.course_id
+group by c.course_name
+order by NO_OF_STUDENTS_ENROLLED desc
+)
+where rownum = 1;
+
+
+-------Max marks in each course--------
+
+select max(r.name) as Name, c.course_name,  max(a.score) as max_score 
+from registration r, courses c, registration_course cd, assignments a
+where r.registration_id=cd.registration_id
+and c.course_id = cd.course_id 
+and a.registration_course_id = cd.registration_course_id
+group by c.course_name
+order by course_name
